@@ -32,7 +32,7 @@ public class UserSession {
     }
 
 
-    public boolean checkIdentity(String username, String password) throws JSONException, IOException {
+    private boolean checkIdentity(String username, String password) throws JSONException, IOException {
 
 
         String pfad = "C:/Users/Niels/eclipse-workspace/Schule Chat/src/methods/users.json";
