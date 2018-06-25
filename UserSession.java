@@ -35,7 +35,7 @@ public class UserSession {
     private boolean checkIdentity(String username, String password) throws JSONException, IOException {
 
 
-        String pfad = "C:/Users/Niels/eclipse-workspace/Schule Chat/src/methods/users.json";
+        String pfad = "/src/methods/users.json";
         File file = new File(pfad);
 
         String content = new String(Files.readAllBytes(Paths.get(file.toURI())), "UTF-8");
