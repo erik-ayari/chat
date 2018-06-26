@@ -15,7 +15,7 @@ public class Chat {
 
 	private JFrame frame;
 	JTabbedPane tabbedPane;
-	ArrayList<JPanel> panels;
+	static ArrayList<JPanel> panels;
 	int i;
 
 	/**
@@ -86,6 +86,7 @@ public class Chat {
 		JTextArea chatHistory = new JTextArea();
 		JTextField messageField = new JTextField();
 		messageField.setFont(new Font("Tahoma", Font.PLAIN, 40));
+		messageField.addActionListener(sendAction(i));
 		panel.add(chatHistory, BorderLayout.CENTER);
 		panel.add(messageField, BorderLayout.PAGE_END);
 		panels.add(panel);
@@ -98,5 +99,19 @@ public class Chat {
 	 */
 	public static void performLogin(String server, String username, String password, String chatroom) {
 		
+	}
+	
+	public Action sendAction(int index) {
+		Action action = new AbstractAction() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				BorderLayout layout = (BorderLayout) panels.get(index).getLayout();
+				JTextField messageField = (JTextField) layout.getLayoutComponent(BorderLayout.PAGE_END);
+				messageField.setText("");
+			}
+			
+		};
+		return action;
 	}
 }
