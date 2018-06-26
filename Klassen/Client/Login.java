@@ -1,23 +1,14 @@
 package client;
 
-import java.awt.event.*;
 import javax.swing.*;
 import java.awt.*;
 
 public class Login {
 
 	JFrame frame;
-	JTextField txtServer;
-	JTextField txtUsername;
-	JTextField txtPassword;
-	JTextField txtChatroom;
-	
+	JTextField txtServer, txtUsername, txtPassword, txtChatroom;
 	JButton btnLogIn;
-	boolean loginComplete;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -31,16 +22,10 @@ public class Login {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public Login() {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		frame = new JFrame();
 		frame.setResizable(false);
