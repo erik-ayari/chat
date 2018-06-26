@@ -1,23 +1,19 @@
 package client;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.*;
+import java.awt.event.*;
 import javax.swing.*;
+import java.awt.*;
 
-public class Chat {
+public class Login {
+
+	JFrame frame;
+	JTextField txtServer;
+	JTextField txtUsername;
+	JTextField txtPassword;
+	JTextField txtChatroom;
 	
-	//LOGIN-Variablen
-	private static String server;
-	private static String username;
-	private static String password;
-	private static String chatroom;
-
-	private JFrame frame;
-	JTabbedPane tabbedPane;
-	ArrayList<JPanel> panels;
-	int i;
+	JButton btnLogIn;
+	boolean loginComplete;
 
 	/**
 	 * Launch the application.
@@ -26,24 +22,8 @@ public class Chat {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//LOGIN
-					Login loginWindow = new Login();
-					loginWindow.frame.setVisible(true);
-					loginWindow.btnLogIn.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent arg0) {
-							server = loginWindow.txtServer.getText();
-							username = loginWindow.txtUsername.getText();
-							password = loginWindow.txtPassword.getText();
-							chatroom = loginWindow.txtChatroom.getText();
-							if(chatroom == "Chatroom") { chatroom = "#main"; }
-							performLogin(server, username, password, chatroom);
-							loginWindow.frame.setVisible(false);
-							//CHAT
-							Chat chatWindow = new Chat();
-							chatWindow.frame.setVisible(true);
-						}
-					});
+					Login window = new Login();
+					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -54,7 +34,7 @@ public class Chat {
 	/**
 	 * Create the application.
 	 */
-	public Chat() {
+	public Login() {
 		initialize();
 	}
 
@@ -62,38 +42,45 @@ public class Chat {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		
 		frame = new JFrame();
-		frame.setBounds(100, 100, screen.width/2, screen.height/2);
-		frame.setLocation(screen.width/2-frame.getSize().width/2, screen.height/2-frame.getSize().height/2);
+		frame.setResizable(false);
+		frame.setBounds(100, 100, 300, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
 		
-		panels = new ArrayList<JPanel>();
+		JLabel lblLogIn = new JLabel("Log In");
+		lblLogIn.setFont(new Font("Tahoma", Font.PLAIN, 40));
+		lblLogIn.setHorizontalAlignment(SwingConstants.CENTER);
+		frame.getContentPane().add(lblLogIn);
 		
-		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 40));
+		txtServer = new JTextField();
+		txtServer.setFont(new Font("Tahoma", Font.PLAIN, 40));
+		txtServer.setText("Server");
+		frame.getContentPane().add(txtServer);
+		txtServer.setColumns(10);
 		
-		addChatroom("#main");
-		addChatroom("#gtav");
-		addChatroom("#detroitbecomehuman");
-		addChatroom("#fortnite");
+		txtUsername = new JTextField();
+		txtUsername.setFont(new Font("Tahoma", Font.PLAIN, 40));
+		txtUsername.setText("Username");
+		frame.getContentPane().add(txtUsername);
+		txtUsername.setColumns(10);
 		
-		frame.setContentPane(tabbedPane);
-	}
-	
-	public void addChatroom(String name) {
-		JPanel panel = new JPanel();
-		panels.add(panel);
+		txtPassword = new JTextField();
+		txtPassword.setFont(new Font("Tahoma", Font.PLAIN, 40));
+		txtPassword.setText("Password");
+		frame.getContentPane().add(txtPassword);
+		txtPassword.setColumns(10);
 		
-		tabbedPane.addTab(name, panels.get(i));
-		++i;
+		txtChatroom = new JTextField();
+		txtChatroom.setFont(new Font("Tahoma", Font.PLAIN, 40));
+		txtChatroom.setText("Chatroom");
+		frame.getContentPane().add(txtChatroom);
+		txtChatroom.setColumns(10);
+		
+		btnLogIn = new JButton("Enter");
+		btnLogIn.setFont(new Font("Tahoma", Font.PLAIN, 40));
+		frame.getContentPane().add(btnLogIn);
+		
 	}
 
-	/*Login-Methode, mit Anfrage ob der Chatroom schon existiert oder ob er neu erstellt werden soll
-	 * Außerdem sollte eine ArrayList mit allen Chatrooms ankommen.
-	 */
-	public static void performLogin(String server, String username, String password, String chatroom) {
-		
-	}
 }
