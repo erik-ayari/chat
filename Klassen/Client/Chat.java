@@ -12,7 +12,8 @@ public class Chat {
 	
 	static //LOGIN-Variablen
 	UserSession userSession;
-	private static String server, username, password, chatroom;
+	static String server, ip, username, password, chatroom;
+	static int port;
 	private JFrame frame;
 	JTabbedPane tabbedPane;
 	static ArrayList<JPanel> panels;
@@ -29,12 +30,20 @@ public class Chat {
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
 							server = loginWindow.txtServer.getText();
+							try {
+								String[] s = server.split(":");
+								ip = s[0];
+								port = Integer.parseInt(s[1]);
+							} catch(Exception e) {
+								e.printStackTrace();
+							}
 							username = loginWindow.txtUsername.getText();
 							password = loginWindow.txtPassword.getText();
 							chatroom = loginWindow.txtChatroom.getText();
 							if(chatroom == "Chatroom") { chatroom = "#main"; }
 							try {
 								userSession = new UserSession(username,password);
+								userSession.setServerIPandPort(ip, port);
 							} catch (InvalidLoginArguments e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -97,6 +106,7 @@ public class Chat {
 			public void actionPerformed(ActionEvent arg0) {
 				BorderLayout layout = (BorderLayout) panels.get(index).getLayout();
 				JTextField messageField = (JTextField) layout.getLayoutComponent(BorderLayout.PAGE_END);
+				userSession.sendMessageToServer(messageField.getText());
 				messageField.setText("");
 			}
 			
