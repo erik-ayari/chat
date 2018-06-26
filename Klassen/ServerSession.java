@@ -1,11 +1,11 @@
 package methods;
 
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 
 public class ServerSession {
 
@@ -15,24 +15,27 @@ public class ServerSession {
         this.serverPort = serverPort;
     }
 
-    public String run() {
+    public String[] waitForMessage() {
         try {
             ServerSocket serverSocket = new ServerSocket(this.serverPort);
 
             //Eine Verbindung wird eingegangen
             Socket socket = serverSocket.accept();
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            String input = in.readLine();
-            String art = input.split("-", 2)[0];
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+
+            String[] input = (String[]) in.readObject();
+
+
+            String art = input[0];
+            String message = input[1];
+            String channel = input[2];
 
             serverSocket.close();
 
             switch (art) {
                 case "msg":
-                    String message = input.split("-", 2)[1];
-                    //System.out.println(message);
-                    return message;
+                    return new String[]{message, channel};
 
                 case "login":
                     break;
@@ -42,9 +45,11 @@ public class ServerSession {
 
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
-        return "abc";
+        return new String[]{"ERROR"};
     }
 
 

@@ -7,7 +7,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -72,9 +73,13 @@ public class UserSession {
 
         try {
             Socket socket = new Socket(this.serverIP, this.serverPort);
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
-            out.println("msg-" + message);
+            //PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            ObjectOutput out = new ObjectOutputStream(socket.getOutputStream());
+
+
+            out.writeObject(new String[]{"msg", message, "Fortnite"});
+
 
             socket.close();
 
