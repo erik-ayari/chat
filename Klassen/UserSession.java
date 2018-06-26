@@ -99,6 +99,7 @@ public class UserSession {
     }
     
     public void waitForMessage(ArrayList<JPanel> panels, JTabbedPane tabbedPane) {
+    	while(true) {
     	try {
             ServerSocket serverSocket = new ServerSocket(this.serverPort);
 
@@ -135,7 +136,7 @@ public class UserSession {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
+    	}
     }
     
     public int findTabByName(String title, JTabbedPane tab)  
