@@ -1,8 +1,7 @@
 package client;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
@@ -83,9 +82,13 @@ public class Chat {
 	}
 	
 	public void addChatroom(String name) {
-		JPanel panel = new JPanel();
+		JPanel panel = new JPanel(new BorderLayout());
+		JTextArea chatHistory = new JTextArea();
+		JTextField messageField = new JTextField();
+		messageField.setFont(new Font("Tahoma", Font.PLAIN, 40));
+		panel.add(chatHistory, BorderLayout.CENTER);
+		panel.add(messageField, BorderLayout.PAGE_END);
 		panels.add(panel);
-		
 		tabbedPane.addTab(name, panels.get(i));
 		++i;
 	}
