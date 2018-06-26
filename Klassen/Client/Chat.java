@@ -1,5 +1,8 @@
 package client;
 
+import methods.UserSession;
+import methods.exceptions.InvalidLoginArguments;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -7,20 +10,14 @@ import javax.swing.*;
 
 public class Chat {
 	
-	//LOGIN-Variablen
-	private static String server;
-	private static String username;
-	private static String password;
-	private static String chatroom;
-
+	static //LOGIN-Variablen
+	UserSession userSession;
+	private static String server, username, password, chatroom;
 	private JFrame frame;
 	JTabbedPane tabbedPane;
 	static ArrayList<JPanel> panels;
 	int i;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -36,7 +33,12 @@ public class Chat {
 							password = loginWindow.txtPassword.getText();
 							chatroom = loginWindow.txtChatroom.getText();
 							if(chatroom == "Chatroom") { chatroom = "#main"; }
-							performLogin(server, username, password, chatroom);
+							try {
+								userSession = new UserSession(username,password);
+							} catch (InvalidLoginArguments e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 							loginWindow.frame.setVisible(false);
 							//CHAT
 							Chat chatWindow = new Chat();
@@ -50,16 +52,10 @@ public class Chat {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public Chat() {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		
@@ -92,13 +88,6 @@ public class Chat {
 		panels.add(panel);
 		tabbedPane.addTab(name, panels.get(i));
 		++i;
-	}
-
-	/*Login-Methode, mit Anfrage ob der Chatroom schon existiert oder ob er neu erstellt werden soll
-	 * Außerdem sollte eine ArrayList mit allen Chatrooms ankommen.
-	 */
-	public static void performLogin(String server, String username, String password, String chatroom) {
-		
 	}
 	
 	public Action sendAction(int index) {
