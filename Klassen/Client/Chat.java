@@ -22,6 +22,8 @@ public class Chat {
 	static ArrayList<JPanel> panels;
 	int i;
 	static String[] newMessage;
+	static String[] chatrooms;
+	ChatroomGUI cgi;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -46,8 +48,7 @@ public class Chat {
 							chatroom = loginWindow.txtChatroom.getText();
 							if(chatroom == "Chatroom") { chatroom = "#main"; }
 							try {
-								userSession = new UserSession(username,password);
-								userSession.setServerIPandPort(ip, port);
+								userSession = new UserSession(username,password,ip,port);
 							} catch (InvalidLoginArguments e) {
 								e.printStackTrace();
 							}
@@ -83,24 +84,14 @@ public class Chat {
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(font);
 		
+		chatrooms[] = userSession.getCurrentChatRooms();
+		
+		cgi = new ChatroomGUI(panels);
+		cgi.addChatrooms = new ChatroomGUI(chatrooms[], tabbedPane, userSession);
+		
 		frame.setContentPane(tabbedPane);
 		
 		ReceiveMessages rmsg = new ReceiveMessages(tabbedPane, panels, port, username);
 		rmsg.run();
-	}
-	
-	public Action sendAction(int index) {
-		Action action = new AbstractAction() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				ChatroomGUI cGUI = new ChatroomGUI(panels);
-				JTextField messageField = cGUI.getMessageField(index);
-				userSession.sendMessageToServer(messageField.getText());
-				messageField.setText("");
-			}
-			
-		};
-		return action;
 	}
 }
