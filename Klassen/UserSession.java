@@ -97,57 +97,5 @@ public class UserSession {
 
 
     }
-    
-    public void waitForMessage(ArrayList<JPanel> panels, JTabbedPane tabbedPane) {
-    	while(true) {
-    	try {
-            ServerSocket serverSocket = new ServerSocket(this.serverPort);
-
-            //Eine Verbindung wird eingegangen
-            Socket socket = serverSocket.accept();
-
-            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-
-            String[] input = (String[]) in.readObject();
-
-
-            String art = input[0];
-            String message = input[1];
-            String channel = input[2];
-
-            serverSocket.close();
-
-            switch (art) {
-                case "msg":
-                	int index = findTabByName(channel, tabbedPane);
-                	BorderLayout layout = (BorderLayout) panels.get(index).getLayout();
-    				JTextArea chatHistory = (JTextArea) layout.getLayoutComponent(BorderLayout.CENTER);
-    				chatHistory.append("\n" + message);
-                    //return new String[]{message, channel};
-
-                case "login":
-                    break;
-
-            }
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    	}
-    }
-    
-    public int findTabByName(String title, JTabbedPane tab)  
-    {
-      int tabCount = tab.getTabCount();
-      for (int i=0; i < tabCount; i++) 
-      {
-        String tabTitle = tab.getTitleAt(i);
-        if (tabTitle.equals(title)) return i;
-      }
-      return -1;
-    }
 
 }
