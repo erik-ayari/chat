@@ -16,6 +16,9 @@ public class Server {
 	int i;
 	
 	static int port;
+	ServerSession serverSession;
+	String[] chatrooms;
+	ChatroomGUI cgi;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -25,6 +28,7 @@ public class Server {
 					port = Integer.parseInt(JOptionPane.showInputDialog(frame, "Please enter a port."));
 					Server window = new Server();
 					window.frame.setVisible(true);
+					serverSession = new ServerSession(port);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -49,12 +53,18 @@ public class Server {
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 40));
 		
-		addChatroom("#main");
-		addChatroom("#gtav");
-		addChatroom("#detroitbecomehuman");
-		addChatroom("#fortnite");
+		chatrooms[] = serverSession.getChatrooms();
+		cgi = new ChatroomGUI(panels);
+		cgi.addChatrooms(chatrooms[], tabbedPane);
 		
 		frame.setContentPane(tabbedPane);
+		
+		while(true) {
+			String[] input = serverSession.waitForMessages();
+			if(input[0] == "msgdistribute") {
+				
+			}
+		}
 	}
 
 }
