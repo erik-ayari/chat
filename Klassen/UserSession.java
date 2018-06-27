@@ -42,16 +42,22 @@ public class UserSession {
     }
 
     public String[] getCurrentChatRooms() {
-        
+        return new String[]{};
     }
+
+
 
 
     public void sendChatMessageToServer(String message) {
         sendInfoToServer(new String[]{"msg", message, "Fortnite"});
     }
 
+    public void addNewChatroom(String name) {
+        sendInfoToServer(new String[]{"addChatroom", name});
+    }
 
-    private void sendInfoToServer(String[] message) {
+
+    public void sendInfoToServer(String[] message) {
         try {
             Socket socket = new Socket(this.serverIP, this.serverPort);
 
