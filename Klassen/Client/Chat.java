@@ -87,7 +87,7 @@ public class Chat {
 		chatrooms[] = userSession.getCurrentChatRooms();
 		
 		cgi = new ChatroomGUI(panels);
-		cgi.addChatrooms = new ChatroomGUI(chatrooms[], tabbedPane, userSession);
+		cgi.addChatrooms(chatrooms[], tabbedPane, userSession);
 		
 		frame.setContentPane(tabbedPane);
 		
