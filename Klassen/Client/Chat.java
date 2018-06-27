@@ -7,7 +7,6 @@ import methods.exceptions.InvalidLoginArguments;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import java.util.concurrent.Executors;
 
 import javax.swing.*;
 
@@ -19,6 +18,7 @@ public class Chat {
 	static int port;
 	private JFrame frame;
 	static JTabbedPane tabbedPane;
+	Font font;
 	static ArrayList<JPanel> panels;
 	int i;
 	static String[] newMessage;
@@ -76,35 +76,17 @@ public class Chat {
 		frame.setLocation(screen.width/2-frame.getSize().width/2, screen.height/2-frame.getSize().height/2);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		font = new Font("Tahoma", Font.PLAIN, 40);
+		
 		panels = new ArrayList<JPanel>();
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 40));
-		
-		addChatroom("#main");
-		addChatroom("#gtav");
-		addChatroom("#detroitbecomehuman");
-		addChatroom("#fortnite");
+		tabbedPane.setFont(font);
 		
 		frame.setContentPane(tabbedPane);
 		
-		ReceiveMessages rmsg = new ReceiveMessages(tabbedPane, panels, port);
+		ReceiveMessages rmsg = new ReceiveMessages(tabbedPane, panels, port, username);
 		rmsg.run();
-	}
-	
-	public void addChatroom(String name) {
-		JPanel panel = new JPanel(new BorderLayout());
-		JTextArea chatHistory = new JTextArea();
-		JTextField messageField = new JTextField();
-		messageField.setFont(new Font("Tahoma", Font.PLAIN, 40));
-		messageField.addActionListener(sendAction(i));
-		chatHistory.setFont(new Font("Tahoma", Font.PLAIN, 40));
-		chatHistory.setEditable(false);
-		panel.add(chatHistory, BorderLayout.CENTER);
-		panel.add(messageField, BorderLayout.PAGE_END);
-		panels.add(panel);
-		tabbedPane.addTab(name, panels.get(i));
-		++i;
 	}
 	
 	public Action sendAction(int index) {
