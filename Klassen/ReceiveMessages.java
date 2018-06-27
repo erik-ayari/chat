@@ -48,7 +48,13 @@ public class ReceiveMessages implements Runnable{
 					JTextArea chatHistory = cgi.getChatHistory(index);
 					chatHistory.append(message + "\n");
 				} else if(type=="login") {
-					
+					if(message=="true") {
+						//KeineMeldung
+					} if(message=="false") {
+						//Fehlermeldung
+					}
+				} else if(type="chatroomadded") {
+					//Neuer Chatroom in GUI	
 				}
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
