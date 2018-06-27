@@ -53,7 +53,7 @@ public class Server {
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 40));
 		
-		chatrooms[] = serverSession.getChatrooms();
+		chatrooms[] = serverSession.getCurrentChatrooms();
 		cgi = new ChatroomGUI(panels);
 		cgi.addChatrooms(chatrooms[], tabbedPane);
 		
@@ -62,7 +62,14 @@ public class Server {
 		while(true) {
 			String[] input = serverSession.waitForMessages();
 			if(input[0] == "msgdistribute") {
-				
+				String message = input[1];
+				String user = input[2];
+				String chatroom = input[3];
+				int index = cgi.findTabByName(chatroom, tabbedPane);
+				JTextArea chatHistory = cgi.getChatHistory(index);
+				chatHistory.append(user + ": " + message + "\n");
+			} else if(input[0] == "chatroomadded") {
+				String chatroom[] = input[1];
 			}
 		}
 	}
