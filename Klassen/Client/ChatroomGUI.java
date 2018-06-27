@@ -52,7 +52,7 @@ public class ChatroomGUI {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					userSession.sendMessageToServer(messageField.getText());
+					userSession.sendChatMessageToServer(messageField.getText());
 					messageField.setText("");
 				}
 				
@@ -75,7 +75,7 @@ public class ChatroomGUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				userSession.addNewChatroom(chatroomName.getText());
 			}
 			
 		});
