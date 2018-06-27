@@ -98,6 +98,8 @@ public class Chat {
 		JTextField messageField = new JTextField();
 		messageField.setFont(new Font("Tahoma", Font.PLAIN, 40));
 		messageField.addActionListener(sendAction(i));
+		chatHistory.setFont(new Font("Tahoma", Font.PLAIN, 40));
+		chatHistory.setEditable(false);
 		panel.add(chatHistory, BorderLayout.CENTER);
 		panel.add(messageField, BorderLayout.PAGE_END);
 		panels.add(panel);
