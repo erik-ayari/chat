@@ -1,11 +1,14 @@
 package client;
 
 import methods.UserSession;
+import methods.ReceiveMessages;
 import methods.exceptions.InvalidLoginArguments;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.concurrent.Executors;
+
 import javax.swing.*;
 
 public class Chat {
@@ -15,9 +18,10 @@ public class Chat {
 	static String server, ip, username, password, chatroom;
 	static int port;
 	private JFrame frame;
-	JTabbedPane tabbedPane;
+	static JTabbedPane tabbedPane;
 	static ArrayList<JPanel> panels;
 	int i;
+	static String[] newMessage;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -45,7 +49,6 @@ public class Chat {
 								userSession = new UserSession(username,password);
 								userSession.setServerIPandPort(ip, port);
 							} catch (InvalidLoginArguments e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 							loginWindow.frame.setVisible(false);
@@ -84,6 +87,9 @@ public class Chat {
 		addChatroom("#fortnite");
 		
 		frame.setContentPane(tabbedPane);
+		
+		ReceiveMessages rmsg = new ReceiveMessages(tabbedPane, panels, port);
+		rmsg.run();
 	}
 	
 	public void addChatroom(String name) {
@@ -104,8 +110,8 @@ public class Chat {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				BorderLayout layout = (BorderLayout) panels.get(index).getLayout();
-				JTextField messageField = (JTextField) layout.getLayoutComponent(BorderLayout.PAGE_END);
+				ChatroomGUI cGUI = new ChatroomGUI(panels);
+				JTextField messageField = cGUI.getMessageField(index);
 				userSession.sendMessageToServer(messageField.getText());
 				messageField.setText("");
 			}
