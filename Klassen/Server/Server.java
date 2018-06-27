@@ -2,6 +2,8 @@ package server;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.*;
 import javax.swing.*;
 
@@ -65,6 +67,16 @@ public class Server {
 		removeUser.addActionListener(removeAction(i));
 		messageField.setFont(new Font("Tahoma", Font.PLAIN, 40));
 		messageField.addActionListener(sendAction(i));
+		try {
+			String localHost = InetAddress.getLocalHost().toString();
+			String lh[] = localHost.split("/");
+			chatHistory.append("Server started on " + lh[1]);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		chatHistory.setFont(new Font("Tahoma", Font.PLAIN, 40));
+		chatHistory.setEditable(false);
 		panel.add(chatHistory, BorderLayout.CENTER);
 		//panel.add(messageField, BorderLayout.PAGE_END);
 		panel.add(removeUser, BorderLayout.PAGE_END);
