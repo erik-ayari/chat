@@ -1,10 +1,14 @@
 package methods;
 
 import client.ChatroomGUI;
+import client.Chat;
+
+import java.awt.Font;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.AttributedString;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -15,13 +19,15 @@ public class ReceiveMessages implements Runnable{
 	JTabbedPane tabbedPane;
 	ArrayList<JPanel> panels;
 	int port;
+	String username;
 	ServerSocket serverSocket;
 	ObjectInputStream ois;
 	
-	public ReceiveMessages(JTabbedPane tabbedPane, ArrayList<JPanel> panels, int port) {
+	public ReceiveMessages(JTabbedPane tabbedPane, ArrayList<JPanel> panels, int port, String username) {
 		this.tabbedPane = tabbedPane;
 		this.panels = panels;
 		this.port = port;
+		this.username = username;
 		try {
 			serverSocket = new ServerSocket(this.port);
 		} catch (IOException e) {
@@ -37,24 +43,21 @@ public class ReceiveMessages implements Runnable{
 				ObjectInputStream inStream = new ObjectInputStream(socket.getInputStream());
 				String[] in = (String[]) inStream.readObject();
 				
-				String type = in[0];
-				String message = in[1];
-				String chatroom = in[2];
-				
 				serverSocket.close();
 				
-				if(type=="msg") {
+				if(in[0]=="msgdistribute") {
+					String message = in[1];
+					String user = in[2];
+					String chatroom = in[3];
 					int index = cgi.findTabByName(chatroom, tabbedPane);
 					JTextArea chatHistory = cgi.getChatHistory(index);
-					chatHistory.append(message + "\n");
-				} else if(type=="login") {
-					if(message=="true") {
-						//KeineMeldung
-					} if(message=="false") {
-						//Fehlermeldung
+					if(user!=username) {
+						chatHistory.append(user + ": " + message + "\n");
+					} else {
+						chatHistory.append("<b>" + user + ": " + message + "</b>");
 					}
-				} else if(type="chatroomadded") {
-					//Neuer Chatroom in GUI	
+				} else if(in[0]=="chatroomadded") {
+					String chatroom = in[1];
 				}
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
