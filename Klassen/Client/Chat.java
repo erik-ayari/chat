@@ -23,7 +23,7 @@ public class Chat {
     static JTabbedPane tabbedPane;
     static ArrayList<JPanel> panels;
     static String[] newMessage;
-    static String[] chatrooms;
+    static ArrayList<String> chatrooms;
     Font font;
     int i;
     ChatroomGUI cgi;
