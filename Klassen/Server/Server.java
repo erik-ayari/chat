@@ -55,13 +55,13 @@ public class Server {
 
         serverSession = new ServerSession(port);
 
-        chatrooms = serverSession.getCurrentChatrooms();
-        cgi = new ChatroomGUI(panels);
-        cgi.addChatrooms(chatrooms, tabbedPane);
+        ArrayList<String> chatrooms = serverSession.getCurrentChatrooms();
+        cgi = new ChatroomGUI(panels, tabbedPane, chatrooms);
+        cgi.addCurrentChatrooms(chatrooms);
 
         frame.setContentPane(tabbedPane);
 
-        ReceiveMessages rmsg = new ReceiveMessages(tabbedPane, panels, serverSession, port);
+        ReceiveMessages rmsg = new ReceiveMessages(tabbedPane, panels, serverSession, port, chatrooms);
         rmsg.start();
     }
 
