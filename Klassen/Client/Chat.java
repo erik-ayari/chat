@@ -5,6 +5,9 @@ import methods.UserSession;
 import methods.exceptions.InvalidLoginArguments;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -97,7 +100,17 @@ public class Chat {
 
         tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         tabbedPane.setFont(font);
+        Color normal = tabbedPane.getForeground();
+        tabbedPane.addChangeListener(new ChangeListener() {
 
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				if(normal!=tabbedPane.getForegroundAt(tabbedPane.getSelectedIndex())) {
+					tabbedPane.setForegroundAt(tabbedPane.getSelectedIndex(), normal);
+				}
+			}
+        	
+        });
 
         chatrooms = userSession.getCurrentChatRooms();
 
