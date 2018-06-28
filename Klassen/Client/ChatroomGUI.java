@@ -12,13 +12,15 @@ public class ChatroomGUI {
     ArrayList<JPanel> panels;
     JTabbedPane tabbedPane;
     UserSession userSession;
+    String[] chatrooms;
     int plus;
     Font font = new Font("Tahoma", Font.PLAIN, 40);
 
-    public ChatroomGUI(ArrayList<JPanel> panels, JTabbedPane tabbedPane, UserSession userSession) {
+    public ChatroomGUI(ArrayList<JPanel> panels, JTabbedPane tabbedPane, UserSession userSession, String[] chatrooms) {
         this.panels = panels;
         this.tabbedPane = tabbedPane;
         this.userSession = userSession;
+        this.chatrooms = chatrooms;
     }
 
     public JTextArea getChatHistory(int index) {
@@ -48,10 +50,10 @@ public class ChatroomGUI {
         return -1;
     }
 
-    public void addCurrentChatrooms(String[] chatrooms) {
+    public void addCurrentChatrooms(String[] chats) {
 
 
-        for (int i = 0; i < chatrooms.length; i++) {
+        for (int i = 0; i < chats.length; i++) {
             JPanel panel = new JPanel(new BorderLayout());
             JTextArea chatHistory = new JTextArea();
             JTextField messageField = new JTextField();
@@ -74,7 +76,7 @@ public class ChatroomGUI {
             panel.add(chatHistory, BorderLayout.CENTER);
             panel.add(messageField, BorderLayout.PAGE_END);
             panels.add(panel);
-            tabbedPane.addTab(chatrooms[i], panels.get(i));
+            tabbedPane.addTab(chats[i], panels.get(i));
             plus = ++i;
         }
         addPlus(plus);
@@ -102,30 +104,9 @@ public class ChatroomGUI {
     }
     
     public void addChatroom(String chatroom) {
-    	tabbedPane.removeTabAt(plus);
-    	final int index = plus;
-    	JPanel panel = new JPanel(new BorderLayout());
-        JTextArea chatHistory = new JTextArea();
-        JTextField messageField = new JTextField();
-        messageField.setFont(font);
-
-        messageField.addActionListener(new AbstractAction() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                userSession.sendChatMessageToServer(messageField.getText(), findTitlebyIndex(index));
-                messageField.setText("");
-            }
-
-        });
-        chatHistory.setFont(font);
-        chatHistory.setEditable(false);
-        panel.add(chatHistory, BorderLayout.CENTER);
-        panel.add(messageField, BorderLayout.PAGE_END);
-        panels.add(panel);
-        tabbedPane.addTab(chatroom, panels.get(plus));
-        plus++;
-        addPlus(plus);
+    	tabbedPane.removeAll();
+    	int n = chatrooms.length-1;
+    	chatrooms[n] = chatroom;
+    	addCurrentChatrooms(chatrooms);
     }
 }
