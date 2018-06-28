@@ -62,7 +62,7 @@ public class ChatroomGUI {
             try {
                 String localHost = InetAddress.getLocalHost().toString();
                 String lh[] = localHost.split("/");
-                chatHistory.append("Server started on " + lh[1]);
+                chatHistory.append("Server started on " + lh[1] + "\n");
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             }
