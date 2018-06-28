@@ -19,11 +19,11 @@ public class ReceiveMessages extends Thread {
     int port;
     String username;
     UserSession userSession;
-    String[] chatrooms;
+    ArrayList<String> chatrooms;
     ServerSocket serverSocket;
     ObjectInputStream ois;
 
-    public ReceiveMessages(JTabbedPane tabbedPane, ArrayList<JPanel> panels, int port, String username, UserSession userSession, String[] chatrooms) {
+    public ReceiveMessages(JTabbedPane tabbedPane, ArrayList<JPanel> panels, int port, String username, UserSession userSession, ArrayList<String> chatrooms) {
         this.tabbedPane = tabbedPane;
         this.panels = panels;
         this.port = port;
@@ -68,7 +68,7 @@ public class ReceiveMessages extends Thread {
                     if(index != tabbedPane.getSelectedIndex()) {
                     	tabbedPane.setBackgroundAt(index, Color.YELLOW);
                     }
-                } else if (in[0] == "chatroomadded") {
+                } else if (in[0].equals("chatroomadded")) {
                 	String chatroom = in[1];
                     cgi.addChatroom(chatroom);
                 }
