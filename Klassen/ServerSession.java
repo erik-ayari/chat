@@ -98,6 +98,18 @@ public class ServerSession {
 
 
     }
-    
+
+    public String getUserByIP(String ip) throws IOException, JSONException {
+        String pfad = "src/methods/data/users.json";
+        File file = new File(pfad);
+        String content = new String(Files.readAllBytes(Paths.get(file.toURI())), "UTF-8");
+
+        JSONObject json = new JSONObject(content);
+
+        return (String) json.get(ip);
+
+
+    }
+
 
 }
