@@ -27,13 +27,15 @@ public class ReceiveMessages extends Thread {
 	JTabbedPane tabbedPane;
 	ArrayList<JPanel> panels;
 	ServerSession serverSession;
+	ArrayList<String> chatrooms;
 	int port;
 	
-	public ReceiveMessages(JTabbedPane tabbedPane, ArrayList<JPanel> panels, ServerSession serverSession, int port) {
+	public ReceiveMessages(JTabbedPane tabbedPane, ArrayList<JPanel> panels, ServerSession serverSession, int port, ArrayList<String> chatrooms) {
 		this.tabbedPane = tabbedPane;
 		this.panels = panels;
 		this.serverSession = serverSession;
 		this.port = port;
+		this.chatrooms = chatrooms;
 	}
 	
 	public void run() {
@@ -88,8 +90,8 @@ public class ReceiveMessages extends Thread {
 
 
                 //ALle Benutzer austeilen {msgDistribute, message, user, chatroom}
-                ChatroomGUI cgi = new ChatroomGUI(panels);
-                int index = cgi.findTabByName(chatroom, tabbedPane);
+                ChatroomGUI cgi = new ChatroomGUI(panels, tabbedPane, chatrooms);
+                int index = cgi.findTabByName(chatroom);
                 JTextArea chatHistory = cgi.getChatHistory(index);
                 chatHistory.append(sender + ": " + message + "\n");
             } else if(type=="login") {
@@ -106,7 +108,7 @@ public class ReceiveMessages extends Thread {
                 out.println(success);
                 answer.close();
 
-                ChatroomGUI cgi = new ChatroomGUI(panels);
+                ChatroomGUI cgi = new ChatroomGUI(panels, tabbedPane, chatrooms);
                 cgi.printInEveryChatroom(username + " hat den Chat betreten.");
 
             } else if(type=="getChatrooms") {
@@ -118,6 +120,11 @@ public class ReceiveMessages extends Thread {
                 ObjectOutput objectOut = new ObjectOutputStream(answer.getOutputStream());
                 objectOut.writeObject(chatrooms);
                 answer.close();
+            } else if(type=="addNewChatroom") {
+            	String chatroom = input[1];
+            	
+            	ChatroomGUI cgi = new ChatroomGUI(panels, tabbedPane, chatrooms);
+            	cgi.addChatroom(chatroom);
             }
 
 
