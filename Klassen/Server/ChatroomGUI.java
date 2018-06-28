@@ -11,10 +11,14 @@ import javax.swing.*;
 public class ChatroomGUI {
 
     ArrayList<JPanel> panels;
+    JTabbedPane tabbedPane;
+    ArrayList<String> chatrooms;
     Font font = new Font("Tahoma", Font.PLAIN, 40);
 
-    public ChatroomGUI(ArrayList<JPanel> panels) {
+    public ChatroomGUI(ArrayList<JPanel> panels, JTabbedPane tabbedPane, ArrayList<String> chatrooms) {
         this.panels = panels;
+        this.tabbedPane = tabbedPane;
+        this.chatrooms = chatrooms;
     }
 
     public JTextArea getChatHistory(int index) {
@@ -29,7 +33,7 @@ public class ChatroomGUI {
         return messageField;
     }
 
-    public int findTabByName(String title, JTabbedPane tabbedPane)
+    public int findTabByName(String title)
     {
         int tabCount = tabbedPane.getTabCount();
         for (int i=0; i < tabCount; i++)
@@ -40,15 +44,15 @@ public class ChatroomGUI {
         return -1;
     }
 
-    public void addChatrooms(String[] chatrooms, JTabbedPane tabbedPane) {
+    public void addCurrentChatrooms(ArrayList<String> chats) {
 
-
-        for(int i = 0; i < chatrooms.length; i++) {
+    	int i = 0;
+        for(String chat: chats) {
             JPanel panel = new JPanel(new BorderLayout());
             JTextArea chatHistory = new JTextArea();
             JTextField messageField = new JTextField();
             JButton removeUser = new JButton();
-            removeUser.setFont(new Font("Tahoma", Font.PLAIN, 40));
+            removeUser.setFont(font);
             removeUser.setText("Remove User");
             removeUser.addActionListener(new AbstractAction() {
 
@@ -71,8 +75,15 @@ public class ChatroomGUI {
             panel.add(chatHistory, BorderLayout.CENTER);
             panel.add(removeUser, BorderLayout.PAGE_END);
             panels.add(panel);
-            tabbedPane.addTab(chatrooms[i], panels.get(i));
+            tabbedPane.addTab(chat, panels.get(i));
         }
+        i++;
+    }
+    
+    public void addChatroom(String chatroom) {
+    	tabbedPane.removeAll();
+    	chatrooms.add(chatroom);
+    	addCurrentChatrooms(chatrooms);
     }
     
     public void printInEveryChatroom(String message) {
