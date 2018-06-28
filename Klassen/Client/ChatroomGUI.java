@@ -12,11 +12,11 @@ public class ChatroomGUI {
     ArrayList<JPanel> panels;
     JTabbedPane tabbedPane;
     UserSession userSession;
-    String[] chatrooms;
+    ArrayList<String> chatrooms;
     int plus;
     Font font = new Font("Tahoma", Font.PLAIN, 40);
 
-    public ChatroomGUI(ArrayList<JPanel> panels, JTabbedPane tabbedPane, UserSession userSession, String[] chatrooms) {
+    public ChatroomGUI(ArrayList<JPanel> panels, JTabbedPane tabbedPane, UserSession userSession, ArrayList<String> chatrooms) {
         this.panels = panels;
         this.tabbedPane = tabbedPane;
         this.userSession = userSession;
@@ -50,10 +50,10 @@ public class ChatroomGUI {
         return -1;
     }
 
-    public void addCurrentChatrooms(String[] chats) {
+    public void addCurrentChatrooms(ArrayList<String> chats) {
 
-
-        for (int i = 0; i < chats.length; i++) {
+    	int i = 0;
+        for (String chat: chats) {
             JPanel panel = new JPanel(new BorderLayout());
             JTextArea chatHistory = new JTextArea();
             JTextField messageField = new JTextField();
@@ -76,8 +76,9 @@ public class ChatroomGUI {
             panel.add(chatHistory, BorderLayout.CENTER);
             panel.add(messageField, BorderLayout.PAGE_END);
             panels.add(panel);
-            tabbedPane.addTab(chats[i], panels.get(i));
-            plus = ++i;
+            tabbedPane.addTab(chat, panels.get(i));
+            plus = i+1;
+            i++;
         }
         addPlus(plus);
     }
@@ -105,8 +106,7 @@ public class ChatroomGUI {
     
     public void addChatroom(String chatroom) {
     	tabbedPane.removeAll();
-    	int n = chatrooms.length-1;
-    	chatrooms[n] = chatroom;
+    	chatrooms.add(chatroom);
     	addCurrentChatrooms(chatrooms);
     }
 }
