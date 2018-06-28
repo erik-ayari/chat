@@ -5,6 +5,7 @@ import methods.UserSession;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ChatroomGUI {
@@ -101,31 +102,14 @@ public class ChatroomGUI {
         tabbedPane.addTab("+", addPanel);
     }
     
-    public void addChatroom(String chatroom) {
-    	tabbedPane.removeTabAt(plus);
-    	final int index = plus;
-    	JPanel panel = new JPanel(new BorderLayout());
-        JTextArea chatHistory = new JTextArea();
-        JTextField messageField = new JTextField();
-        messageField.setFont(font);
-
-        messageField.addActionListener(new AbstractAction() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                userSession.sendChatMessageToServer(messageField.getText(), findTitlebyIndex(index));
-                messageField.setText("");
-            }
-
-        });
-        chatHistory.setFont(font);
-        chatHistory.setEditable(false);
-        panel.add(chatHistory, BorderLayout.CENTER);
-        panel.add(messageField, BorderLayout.PAGE_END);
-        panels.add(panel);
-        tabbedPane.addTab(chatroom, panels.get(plus));
-        plus++;
-        addPlus(plus);
+    public void addChatroom() {
+    	tabbedPane.removeAll();
+    	String[] chatrooms = null;
+		try {
+			chatrooms = userSession.getCurrentChatRooms();
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+		}
+    	addCurrentChatrooms(chatrooms);
     }
 }
