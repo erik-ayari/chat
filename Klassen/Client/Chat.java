@@ -114,13 +114,13 @@ public class Chat {
         chatrooms = userSession.getCurrentChatRooms();
 
 
-        cgi = new ChatroomGUI(panels, tabbedPane, userSession);
+        cgi = new ChatroomGUI(panels, tabbedPane, userSession, chatrooms);
         cgi.addCurrentChatrooms(chatrooms);
 
         frame.setContentPane(tabbedPane);
 
 
-        ReceiveMessages rmsg = new ReceiveMessages(tabbedPane, panels, port, username, userSession);
+        ReceiveMessages rmsg = new ReceiveMessages(tabbedPane, panels, port, username, userSession, chatrooms);
         rmsg.start();
         System.out.println("Bis hier");
     }
