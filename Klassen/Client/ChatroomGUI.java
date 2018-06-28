@@ -80,10 +80,9 @@ public class ChatroomGUI {
             plus = i+1;
             i++;
         }
-        addPlus(plus);
     }
     
-    public void addPlus(int plus) {
+    /*public void addPlus(int plus) {
     	JPanel addPanel = new JPanel(new BorderLayout());
         JTextField chatroomName = new JTextField();
         chatroomName.setFont(font);
@@ -108,5 +107,5 @@ public class ChatroomGUI {
     	tabbedPane.removeAll();
     	chatrooms.add(chatroom);
     	addCurrentChatrooms(chatrooms);
-    }
+    }*/
 }
