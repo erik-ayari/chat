@@ -76,8 +76,8 @@ public class ChatroomGUI {
             panels.add(panel);
             tabbedPane.addTab(chatrooms[i], panels.get(i));
             plus = i;
-            addPlus(plus);
         }
+        addPlus(plus);
     }
     
     public void addPlus(int plus) {
