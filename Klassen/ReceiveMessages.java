@@ -18,14 +18,16 @@ public class ReceiveMessages extends Thread {
     ArrayList<JPanel> panels;
     int port;
     String username;
+    UserSession userSession;
     ServerSocket serverSocket;
     ObjectInputStream ois;
 
-    public ReceiveMessages(JTabbedPane tabbedPane, ArrayList<JPanel> panels, int port, String username) {
+    public ReceiveMessages(JTabbedPane tabbedPane, ArrayList<JPanel> panels, int port, String username, UserSession userSession) {
         this.tabbedPane = tabbedPane;
         this.panels = panels;
         this.port = port;
         this.username = username;
+        this.userSession = userSession;
 //        try {
 //            //////////// KONSTANTER PORT FÃœR TESTEN
 //            //serverSocket = new ServerSocket(34568);
@@ -35,7 +37,7 @@ public class ReceiveMessages extends Thread {
     }
 
     public void run() {
-        ChatroomGUI cgi = new ChatroomGUI(panels);
+        ChatroomGUI cgi = new ChatroomGUI(panels, tabbedPane, userSession);
         while (true) {
             try {
 
@@ -54,7 +56,7 @@ public class ReceiveMessages extends Thread {
 
                     System.out.println(message+user+chatroom);
 
-                    int index = cgi.findTabByName(chatroom, tabbedPane);
+                    int index = cgi.findTabByName(chatroom);
                     JTextArea chatHistory = cgi.getChatHistory(index);
                     if (user != username) {
                         chatHistory.append(user + ": " + message + "\n");
@@ -62,10 +64,11 @@ public class ReceiveMessages extends Thread {
                         chatHistory.append("<b>" + user + ": " + message + "</b>");
                     }
                     if(index != tabbedPane.getSelectedIndex()) {
-                    	tabbedPane.setForegroundAt(index, Color.YELLOW);
+                    	tabbedPane.setBackgroundAt(index, Color.YELLOW);
                     }
                 } else if (in[0] == "chatroomadded") {
                     String chatroom = in[1];
+                    cgi.addChatroom(chatroom);
                 }
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
