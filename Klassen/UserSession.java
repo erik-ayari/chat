@@ -1,6 +1,5 @@
 package methods;
 
-
 import methods.exceptions.InvalidLoginArguments;
 
 import java.io.*;
@@ -20,7 +19,7 @@ public class UserSession {
         this.password = password;
 
         if (!loginToServer(username, password)) {
-            throw new InvalidLoginArguments("Wrong Username/Password");
+            throw new InvalidLoginArguments();
         }
 
     }
@@ -31,7 +30,7 @@ public class UserSession {
 
         sendInfoToServer(new String[]{"login", username, password});
 
-        ServerSocket serverSocket = new ServerSocket(34567);
+        ServerSocket serverSocket = new ServerSocket(34568);
         Socket socket = serverSocket.accept();
 
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -41,15 +40,25 @@ public class UserSession {
 
     }
 
-    public String[] getCurrentChatRooms() {
-        return new String[]{};
+    public String[] getCurrentChatRooms() throws IOException, ClassNotFoundException {
+        sendInfoToServer(new String[]{"getChatrooms"});
+
+        ServerSocket serverSocket = new ServerSocket(45450);
+        Socket socket = serverSocket.accept();
+
+        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+
+        String[] input = (String[]) in.readObject();
+
+        serverSocket.close();
+
+
+        return input;
     }
 
 
-
-
-    public void sendChatMessageToServer(String message) {
-        sendInfoToServer(new String[]{"msg", message, "Fortnite"});
+    public void sendChatMessageToServer(String message, String channel) {
+        sendInfoToServer(new String[]{"msg", message, this.username, channel});
     }
 
     public void addNewChatroom(String name) {
