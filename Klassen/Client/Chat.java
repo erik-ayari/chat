@@ -17,8 +17,7 @@ import java.util.Arrays;
 
 public class Chat {
 
-    static //LOGIN-Variablen
-            UserSession userSession;
+    static UserSession userSession;
     static String server, ip, username, password;
     static int port;
     static JTabbedPane tabbedPane;
@@ -115,13 +114,13 @@ public class Chat {
         chatrooms = userSession.getCurrentChatRooms();
 
 
-        cgi = new ChatroomGUI(panels);
-        cgi.addChatrooms(chatrooms, tabbedPane, userSession);
+        cgi = new ChatroomGUI(panels, tabbedPane, userSession);
+        cgi.addCurrentChatrooms(chatrooms);
 
         frame.setContentPane(tabbedPane);
 
 
-        ReceiveMessages rmsg = new ReceiveMessages(tabbedPane, panels, port, username);
+        ReceiveMessages rmsg = new ReceiveMessages(tabbedPane, panels, port, username, userSession);
         rmsg.start();
         System.out.println("Bis hier");
     }
